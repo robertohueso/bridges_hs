@@ -1,3 +1,11 @@
+module Graph
+  (Edge,
+   Graph,
+   empty,
+   vertices,
+   edges,
+   valid_edge,
+   add_vertex) where
 
 -- Directed edges from one vertex to another are represente by a tuple
 -- (origin, destination)
