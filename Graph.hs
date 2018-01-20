@@ -1,5 +1,6 @@
 module Graph
-  (Edge,
+  (Vertex(..),
+   Edge,
    Graph,
    empty,
    vertices,
@@ -9,32 +10,32 @@ module Graph
 
 -- Directed edges from one vertex to another are represente by a tuple
 -- (origin, destination)
-type Edge p = (p, p)
+data Vertex tag coord = V tag (coord, coord)
+
+type Edge t c = (Vertex t c, Vertex t c)
 
 -- Graphs can be empty, have a single vertex or multiple vertices
 -- all with some coordiantes and a tag.
-data Graph t p = Empty | V t p | G t p [p] (Graph t p)
+data Graph t c = Empty | G (Vertex t c) [(Vertex t c)] (Graph t c)
 
 -- Empty graph
-empty :: Graph t p
+empty :: Graph t c
 empty = Empty
 
 -- List of graph's vertices
-vertices :: Graph t p -> [p]
+vertices :: Graph t c -> [Vertex t c]
 vertices Empty = []
-vertices (V t p) = [p]
-vertices (G t p _ g) = [p] ++ (vertices g)
+vertices (G v _ g) = [v] ++ (vertices g)
 
 -- List of edges
-edges :: (Eq p) => Graph t p -> [Edge p]
-edges (G t p ps g) = [(p, v) | v <- ps] ++ (edges g)
+edges :: Graph t c -> [Edge t c]
+edges (G a vs g) = [(a, b) | b <- vs] ++ (edges g)
 edges _ = []
 
 -- Test if an edge is a cycle on the same vertex
-valid_edge :: (Eq p) => Edge p -> Bool
-valid_edge (a, b) = a /= b
+valid_edge :: (Eq c) => Edge t c -> Bool
+valid_edge ((V _ a), (V _ b)) = a /= b
 
 -- Add a vertex to the graph
-add_vertex :: (Eq p) => t -> p -> Graph t p -> Graph t p
-add_vertex t p Empty = V t p
-add_vertex t p g = G t p [] g
+add_vertex :: (Eq c) => Vertex t c -> Graph t c -> Graph t c
+add_vertex vertex g = G vertex [] g
