@@ -29,8 +29,7 @@ drawEdges g = pictures (
 drawGame :: Graph Tag Int -> Picture
 drawGame g =
   drawVertices g &
-  drawEdges g &
-  coordinatePlane
+  drawEdges g
 
 drawWin :: Picture
 drawWin = text (T.pack "You won! :D")
@@ -52,7 +51,7 @@ resuelveEvento _ g = g
 
 main :: IO()
 main = interactionOf
-  (game2, undefined, undefined)
+  (game3, undefined, undefined)
   (\_ e -> e)
   resuelveEvento
   pintaMundo
@@ -69,4 +68,17 @@ game2 =
   add_vertex (V 3 (-2, 3)) $
   add_vertex (V 5 (-2, 0)) $
   add_vertex (V 2 (-2, -3)) $
+  empty
+
+game3 :: Graph Tag Int
+game3 =
+  add_vertex (V 1 (3, 3)) $
+  add_vertex (V 4 (3, 0)) $
+  add_vertex (V 2 (3, -3)) $
+  add_vertex (V 2 (0, 3)) $
+  add_vertex (V 4 (0, 0)) $
+  add_vertex (V 3 (0, -3)) $
+  add_vertex (V 3 (-3, 3)) $
+  add_vertex (V 2 (-3, 0)) $
+  add_vertex (V 1 (-3, -3)) $
   empty
