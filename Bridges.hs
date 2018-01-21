@@ -52,10 +52,21 @@ resuelveEvento _ g = g
 
 main :: IO()
 main = interactionOf
-  (game1, undefined, undefined)
+  (game2, undefined, undefined)
   (\_ e -> e)
   resuelveEvento
   pintaMundo
 
 game1 :: Graph Tag Int
 game1 = add_vertex (V 2 (0, (-3))) (add_vertex (V 2 (0, 3)) empty)
+
+game2 :: Graph Tag Int
+game2 =
+  add_vertex (V 3 (2, 3)) $
+  add_vertex (V 1 (2, 0)) $
+  add_vertex (V 5 (0, 3)) $
+  add_vertex (V 3 (0, 0)) $
+  add_vertex (V 3 (-2, 3)) $
+  add_vertex (V 5 (-2, 0)) $
+  add_vertex (V 2 (-2, -3)) $
+  empty
