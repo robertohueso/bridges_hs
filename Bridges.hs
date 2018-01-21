@@ -3,27 +3,59 @@ import CodeWorld
 import qualified Data.Text as T
 
 type Tag = Int
+type Coordinates = (Int, Int)
+type Mundo = (Graph Tag Int, Coordinates, Coordinates)
 
 intToText :: Int -> T.Text
 intToText int = T.pack (show int)
 
-drawVertices :: Graph Tag Double -> Picture
+coordToD :: (Int, Int) -> (Double, Double)
+coordToD (x,y) = (fromIntegral x, fromIntegral y)
+
+drawVertices :: Graph Tag Int -> Picture
 drawVertices g = pictures (
-  [translated a b (text (intToText t) & circle 0.5) | (V t (a,b)) <- (vertices g)]
+  [translated
+    (fromIntegral a)
+    (fromIntegral b)
+    (text (intToText t) & circle 0.5)
+  | (V t (a,b)) <- (vertices g)]
   )
 
-drawGame :: Graph Tag Double -> Picture
+drawEdges :: Graph Tag Int -> Picture
+drawEdges g = pictures (
+  [thickPath 0.2 [coordToD a, coordToD b] | (V _ a, V _ b) <- (edges g)]
+  )
+
+drawGame :: Graph Tag Int -> Picture
 drawGame g =
   drawVertices g &
+  drawEdges g &
   coordinatePlane
 
-handleEvent :: Event -> Graph Tag Double -> Graph Tag Double
-handleEvent (MousePress LeftButton (x,y)) g
-  | x == 0 || y == 0 = add_vertex (V 3 (1,1)) g
-  | otherwise = g
-handleEvent _ g = g
+drawWin :: Picture
+drawWin = text (T.pack "You won! :D")
+
+pintaMundo :: Mundo -> Picture
+pintaMundo m@(g, _, _) = if won m then drawWin else drawGame g
+
+won :: Mundo -> Bool
+won (g, _, _) = foldr
+  (\(V t c) acc -> if t == 0 then True && acc else False)
+  True
+  (vertices g)
+
+resuelveEvento :: Event -> Mundo -> Mundo
+resuelveEvento (MousePress LeftButton (x,y)) (g, o, d) = (g, (round x, round y), d)
+resuelveEvento (MousePress MiddleButton (x,y)) (g, o, d) =
+  (add_edge ((V 0 o),(V 0 (round x, round y))) g, o, d)
+resuelveEvento _ g = g
 
 main :: IO()
-main = interactionOf game1 (\_ e -> e) handleEvent drawGame
-game1 :: Graph Tag Double
+main = interactionOf
+  (game1, undefined, undefined)
+  (\_ e -> e)
+  resuelveEvento
+  pintaMundo
+
+game1 :: Graph Tag Int
 game1 = add_vertex (V 2 (0, (-3))) (add_vertex (V 2 (0, 3)) empty)

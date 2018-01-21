@@ -6,12 +6,13 @@ module Graph
    vertices,
    edges,
    valid_edge,
-   add_vertex) where
+   add_vertex,
+   add_edge) where
 
 -- Directed edges from one vertex to another are represente by a tuple
 -- (origin_vertex, destination_vertex)
 data Vertex tag coord = V tag (coord, coord)
-instance (Eq c) => Eq (Vertex t c) where
+instance (Eq c, Num c, Num t) => Eq (Vertex t c) where
   V a (x,y) == V b (z,w) = x==z && y==w
 
 type Edge t c = (Vertex t c, Vertex t c)
@@ -42,9 +43,12 @@ valid_edge ((V _ a), (V _ b)) = a /= b
 add_vertex :: (Eq c) => Vertex t c -> Graph t c -> Graph t c
 add_vertex vertex g = G vertex [] g
 
-add_edge :: (Eq c) => Edge t c -> Graph t c -> Graph t c
+add_edge :: (Eq c, Num c, Num t) => Edge t c -> Graph t c -> Graph t c
 add_edge _ Empty = Empty
-add_edge (origin,destination) (G v vs g) =
-  if v == origin && valid_edge (origin, destination)
-  then G v (destination:vs) g
-  else G v vs (add_edge (origin,destination) g)
+
+add_edge (origin,dest) (G (V t v) vs g)
+  | (V t v) == origin && valid_edge (origin, dest) && not (dest `elem` vs)=
+    G (V (t-1) v) (dest:vs) (add_edge (origin,dest) g)
+  | (V t v) == dest && valid_edge (origin, dest) =
+    G (V (t-1) v) vs (add_edge (origin,dest) g)
+  | otherwise = G (V t v) vs (add_edge (origin,dest) g)
