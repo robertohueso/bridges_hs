@@ -9,7 +9,7 @@ module Graph
    add_vertex) where
 
 -- Directed edges from one vertex to another are represente by a tuple
--- (origin, destination)
+-- (origin_vertex, destination_vertex)
 data Vertex tag coord = V tag (coord, coord)
 
 type Edge t c = (Vertex t c, Vertex t c)
