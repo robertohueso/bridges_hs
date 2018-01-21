@@ -17,9 +17,13 @@ drawGame g =
   drawVertices g &
   coordinatePlane
 
-handleEvent :: Event -> world
+handleEvent :: Event -> Graph Tag Double -> Graph Tag Double
+handleEvent (MousePress LeftButton (x,y)) g
+  | x == 0 || y == 0 = add_vertex (V 3 (1,1)) g
+  | otherwise = g
+handleEvent _ g = g
 
 main :: IO()
-main = drawingOf (drawGame game1)
+main = interactionOf game1 (\_ e -> e) handleEvent drawGame
 game1 :: Graph Tag Double
 game1 = add_vertex (V 2 (0, (-3))) (add_vertex (V 2 (0, 3)) empty)
