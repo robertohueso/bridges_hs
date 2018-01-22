@@ -54,6 +54,7 @@ resuelveEvento (MousePress MiddleButton (x,y)) (g, o, d) =
         dest = (V 0 (round x, round y))
         zero = check_zero (L.find (==origin) $ vertices g) &&
                check_zero (L.find (==dest) $ vertices g)
+resuelveEvento (KeyPress restart_key) _ = main_game
 resuelveEvento _ g = g
 
 check_zero :: Maybe (Vertex Tag Int) -> Bool
@@ -62,7 +63,7 @@ check_zero _ = False
 
 main :: IO()
 main = interactionOf
-  (game3, undefined, undefined)
+  main_game
   (\_ e -> e)
   resuelveEvento
   pintaMundo
@@ -93,3 +94,6 @@ game3 =
   add_vertex (V 2 (-3, 0)) $
   add_vertex (V 1 (-3, -3)) $
   empty
+
+main_game = (game3, undefined, undefined)
+restart_key = T.pack "Esc"
