@@ -1,3 +1,14 @@
+module Bridges
+  (Tag,
+   Coordinates,
+   Mundo,
+   pintaMundo,
+   check_zero,
+   won,
+   game1,
+   game2,
+   game3) where
+
 import Graph
 import CodeWorld
 import qualified Data.Text as T
