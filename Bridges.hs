@@ -1,6 +1,7 @@
 import Graph
 import CodeWorld
 import qualified Data.Text as T
+import qualified Data.List as L
 
 type Tag = Int
 type Coordinates = (Int, Int)
@@ -46,8 +47,18 @@ won (g, _, _) = foldr
 resuelveEvento :: Event -> Mundo -> Mundo
 resuelveEvento (MousePress LeftButton (x,y)) (g, o, d) = (g, (round x, round y), d)
 resuelveEvento (MousePress MiddleButton (x,y)) (g, o, d) =
-  (add_edge ((V 0 o),(V 0 (round x, round y))) g, o, d)
+  if not ((origin, dest) `elem` (edges g)) && zero
+  then (add_edge (origin, dest) g, o, d)
+  else (g, o, d)
+  where origin = (V 0 o)
+        dest = (V 0 (round x, round y))
+        zero = check_zero (L.find (==origin) $ vertices g) &&
+               check_zero (L.find (==dest) $ vertices g)
 resuelveEvento _ g = g
+
+check_zero :: Maybe (Vertex Tag Int) -> Bool
+check_zero (Just (V t c)) = t /= 0
+check_zero _ = False
 
 main :: IO()
 main = interactionOf
