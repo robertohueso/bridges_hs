@@ -19,7 +19,7 @@ import qualified Data.List as L
 
 type Tag = Int
 type Coordinates = (Int, Int)
-type Mundo = (Graph Tag Int, Coordinates, Coordinates)
+type Mundo = (Graph Tag Int, Coordinates)
 
 -- Transforms Int to Text
 intToText :: Int -> T.Text
@@ -57,22 +57,22 @@ drawWin = text (T.pack "You won! :D")
 
 -- Draws the current world
 pintaMundo :: Mundo -> Picture
-pintaMundo m@(g, _, _) = if won m then drawWin else drawGame g
+pintaMundo m@(g, _) = if won m then drawWin else drawGame g
 
 -- Checks if a game is on its final state.
 won :: Mundo -> Bool
-won (g, _, _) = foldr
+won (g, _) = foldr
   (\(V t c) acc -> if t == 0 then True && acc else False)
   True
   (vertices g)
 
 -- Handles user interactions
 resuelveEvento :: Event -> Mundo -> Mundo
-resuelveEvento (MousePress LeftButton (x,y)) (g, o, d) = (g, (round x, round y), d)
-resuelveEvento (MousePress MiddleButton (x,y)) (g, o, d) =
+resuelveEvento (MousePress LeftButton (x,y)) (g, _) = (g, (round x, round y))
+resuelveEvento (MousePress MiddleButton (x,y)) (g, o) =
   if not ((origin, dest) `elem` (edges g)) && zero
-  then (add_edge (origin, dest) g, o, d)
-  else (g, o, d)
+  then (add_edge (origin, dest) g, o)
+  else (g, o)
   where origin = (V 0 o)
         dest = (V 0 (round x, round y))
         zero = check_zero (L.find (==origin) $ vertices g) &&
@@ -114,7 +114,7 @@ game3 =
   empty
 
 -- Defines global constants
-main_game = (game3, undefined, undefined)
+main_game = (game3, undefined)
 restart_key = T.pack "Esc"
 
 -- Main program
