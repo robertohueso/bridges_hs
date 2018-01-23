@@ -80,17 +80,17 @@ main = interactionOf
   pintaMundo
 
 game1 :: Graph Tag Int
-game1 = add_vertex (V 2 (0, (-3))) (add_vertex (V 2 (0, 3)) empty)
+game1 = add_vertex (V 2 (0, (-3))) (add_vertex (V 2 (0, 0)) empty)
 
 game2 :: Graph Tag Int
 game2 =
-  add_vertex (V 3 (2, 3)) $
-  add_vertex (V 1 (2, 0)) $
+  add_vertex (V 3 (3, 3)) $
+  add_vertex (V 1 (3, 0)) $
   add_vertex (V 5 (0, 3)) $
   add_vertex (V 3 (0, 0)) $
-  add_vertex (V 3 (-2, 3)) $
-  add_vertex (V 5 (-2, 0)) $
-  add_vertex (V 2 (-2, -3)) $
+  add_vertex (V 3 (-3, 3)) $
+  add_vertex (V 5 (-3, 0)) $
+  add_vertex (V 2 (-3, -3)) $
   empty
 
 game3 :: Graph Tag Int
