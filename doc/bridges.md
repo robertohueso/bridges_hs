@@ -86,5 +86,28 @@ dónde cada dirección representa desplazarse en esa dirección 3
 unidades del plano euclideo desde el *vertice*.
 
 # Código
+
 ## Ejemplos
+
+Ejecutar resolución en CodeWorld
+```haskell
+:l Bridges.hs
+main
+-- Para probar otros niveles cambiar la constante "main_game"
+```
+
+Ejecutar y visualizar BFS 
+```haskell
+:l Bridges_Solver.hs
+dibuja_resultado $ busqueda estado1
+```
+
 # Referencias
+
+* [Programación declarativa - US](https://www.cs.us.es/cursos/pd/)
+* [Wikipedia - BFS](https://en.wikipedia.org/wiki/Breadth-first_search)
+* [Aprende Haskell por el bien de todos](http://aprendehaskell.es/main.html)
+* [Haskell reference](http://zvon.org/other/haskell/Outputglobal/index.html)
+* [CodeWorld reference](https://code.world/doc-haskell/CodeWorld.html)
+* [Haskell Text Package](https://hackage.haskell.org/package/text-1.2.3.0/docs/Data-Text.html)
+* [Haskell List Package](https://hackage.haskell.org/package/base-4.10.1.0/docs/Data-List.html)
