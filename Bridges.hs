@@ -3,6 +3,7 @@ module Bridges
    Coordinates,
    Mundo,
    pintaMundo,
+   drawGame,
    check_zero,
    won,
    game1,

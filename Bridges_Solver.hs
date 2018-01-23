@@ -1,5 +1,6 @@
 import Bridges
 import Graph
+import CodeWorld
 import qualified Data.List as L
 
 type Estado = Graph Tag Int
@@ -60,3 +61,14 @@ aplica (Izquierda v@(V t (x,y))) g = add_edge (v, dest) g
   where dest = (V 0 (x-3,y))
 aplica (Derecha v@(V t (x,y))) g = add_edge (v, dest) g
   where dest = (V 0 (x+3,y))
+
+genera_anchura :: Estado -> [Estado]
+genera_anchura g = res ++ (concat [genera_anchura r | r <- res])
+  where res = [aplica m g | m <- aplicables g]
+
+busqueda :: Estado -> Maybe Estado
+busqueda g = L.find (esEstadoFinal) (genera_anchura g)
+
+dibuja_resultado :: Maybe Estado -> IO()
+dibuja_resultado (Just e) = drawingOf $ drawGame e
+dibuja_estado _ = drawingOf blank
