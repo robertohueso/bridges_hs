@@ -52,4 +52,11 @@ posible g (Derecha or@(V t (x,y))) = v_find /= Nothing && e_find == Nothing
         
 
 aplica :: Movimiento -> Estado -> Estado
-aplica m e = undefined
+aplica (Arriba v@(V t (x,y))) g = add_edge (v, dest) g
+  where dest = (V 0 (x,y+3))
+aplica (Abajo v@(V t (x,y))) g = add_edge (v, dest) g
+  where dest = (V 0 (x,y-3))
+aplica (Izquierda v@(V t (x,y))) g = add_edge (v, dest) g
+  where dest = (V 0 (x-3,y))
+aplica (Derecha v@(V t (x,y))) g = add_edge (v, dest) g
+  where dest = (V 0 (x+3,y))
