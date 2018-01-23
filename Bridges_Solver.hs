@@ -5,10 +5,12 @@ import qualified Data.List as L
 
 type Estado = Graph Tag Int
 
+-- Varios estados iniciales
 estado1 = game1
 estado2 = game2
 estado3 = game3
 
+-- Comprueba si un estado es final
 esEstadoFinal :: Estado -> Bool
 esEstadoFinal g = foldr
   (\(V t _) acc -> if t == 0 then True && acc else False)
@@ -62,12 +64,18 @@ aplica (Izquierda v@(V t (x,y))) g = add_edge (v, dest) g
 aplica (Derecha v@(V t (x,y))) g = add_edge (v, dest) g
   where dest = (V 0 (x+3,y))
 
-genera_anchura :: Estado -> [Estado]
-genera_anchura g = res ++ (concat [genera_anchura r | r <- res])
-  where res = [aplica m g | m <- aplicables g]
+genera_anchura :: [Estado] -> [Estado]
+genera_anchura [] = []
+genera_anchura es = [e | e <- es] ++
+  genera_anchura (concat [[aplica m e | m <- aplicables e] | e <- es])
+
+-- genera_anchura :: Estado -> [Estado]
+-- genera_anchura g = res ++ (concat [genera_anchura r | r <- res])
+--  where res = [aplica m g | m <- aplicables g]
 
 busqueda :: Estado -> Maybe Estado
-busqueda g = L.find (esEstadoFinal) (genera_anchura g)
+-- busqueda g = L.find (esEstadoFinal) (genera_anchura g)
+busqueda e = L.find (esEstadoFinal) (genera_anchura [e])
 
 dibuja_resultado :: Maybe Estado -> IO()
 dibuja_resultado (Just e) = drawingOf $ drawGame e

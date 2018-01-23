@@ -14,12 +14,15 @@ module Graph
 data Vertex tag coord = V tag (coord, coord)
 instance (Eq c, Num c, Num t) => Eq (Vertex t c) where
   V a (x,y) == V b (z,w) = x==z && y==w
+instance (Show c, Show t) => Show (Vertex t c) where
+  show (V t c) = show c
 
 type Edge t c = (Vertex t c, Vertex t c)
 
 -- Graphs can be empty, have a single vertex or multiple vertices
 -- all with some coordiantes and a tag.
 data Graph t c = Empty | G (Vertex t c) [(Vertex t c)] (Graph t c)
+  deriving Show
 
 -- Empty graph
 empty :: Graph t c
