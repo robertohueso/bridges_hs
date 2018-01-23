@@ -55,7 +55,35 @@ como duplas de enteros.
 ```haskell
 type Coordinates = (Int, Int)
 ```
+El tipo *Mundo* también será una dupla pero en este caso será entre
+un grafo y unas coordenadas (como método auxiliar) que representan
+las coordenadas de origen de la arista. Las coordenadas de destino las
+tomaremos en el manejador de acciones.
+```haskell
+type Mundo = (Graph, Coordinates)
+```
+Para simplificar el código al crear los grafos haré las coordenadas
+(x,y) de los nodos sean múltiplos de 3 partiendo del origen (0,0).
+También haré que los puentes no se puedan cruzar para evitar tener que
+comprobar la planaridad del grafo.
 
+## Búsqueda de solución en anchura
+El tipo *Estado* quedará definido como
+```haskell
+type Estado = Graph
+```
+Dónde *Graph* representa el estado actual del mapa de islas.
+
+Los movimientos que podremos aplicar a cada situación del mapa vendrán
+determinados por *Movimiento* que se define como
+```haskell
+data Movimiento = Arriba vertice
+  | Abajo vertice
+  | Izquierda vertice
+  | Derecha vertice
+```
+dónde cada dirección representa desplazarse en esa dirección 3
+unidades del plano euclideo desde el *vertice*.
 
 # Código
 ## Ejemplos
