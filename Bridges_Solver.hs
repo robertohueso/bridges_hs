@@ -1,3 +1,5 @@
+-- AUTOR: Roberto Hueso Gómez
+
 import Bridges
 import Graph
 import CodeWorld

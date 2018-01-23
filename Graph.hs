@@ -1,3 +1,5 @@
+-- AUTOR: Roberto Hueso Gómez
+
 module Graph
   (Vertex(..),
    Edge,
