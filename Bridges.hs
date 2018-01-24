@@ -42,7 +42,10 @@ drawVertices g = pictures (
 -- Given a graph draws its edges
 drawEdges :: Graph Tag Int -> Picture
 drawEdges g = pictures (
-  [thickPath 0.2 [coordToD a, coordToD b] | (V _ a, V _ b) <- (edges g)]
+  [if (d,o) `elem` (edges g)
+   then colored green (thickPath 0.2 [coordToD a, coordToD b])
+   else thickPath 0.2 [coordToD a, coordToD b]
+  | (o@(V _ a), d@(V _ b)) <- (edges g)]
   )
 
 -- Given a game draws its representation
