@@ -87,6 +87,47 @@ unidades del plano euclideo desde el *vertice*.
 
 # Código
 
+## Juego Interactivo
+
+```haskell
+pintaMundo :: Mundo -> Picture
+```
+Se usa para pintar el mundo trás cada interacción del usuario,
+solo es necesario usarlo en la definición de la interacción.
+
+```haskell
+resuelveEvento :: Event -> Mundo -> Mundo
+```
+Se usa para manejar cada interacción del usuario, ya sea con el ratón
+o con el teclado solo es necesario usarlo en la definición
+de la interacción.
+Contempla las interacciones
+
+* Click izquierdo para definir el origen de una arista.
+* Click central para definir el destino de una arista.
+* Tecla *Escape* para reiniciar el juego a su estado inicial.
+
+## Búsqueda de solución en anchura
+
+```haskell
+esEstadoFinal :: Estado -> Bool
+```
+Se usa en cada estado que se alcanza en el arbol de búsqueda para
+determinar si se ha llegado a una solución.
+
+```haskell
+aplicables :: Estado -> [Movimiento]
+```
+Se usa para generar las acciones aplicables a cada estado dentro de
+la búsqueda BFS.
+
+```haskell
+aplica :: Movimiento -> Estado -> Estado
+```
+Para cada acción aplicable (Cuando generamos el arbol de búsqueda)
+esta función se encarga de generar el nuevo estado al que se llega
+tras haberla aplicado.
+
 ## Ejemplos
 
 Ejecutar resolución en CodeWorld
