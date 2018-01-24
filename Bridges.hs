@@ -73,13 +73,14 @@ won (g, _) = foldr
 resuelveEvento :: Event -> Mundo -> Mundo
 resuelveEvento (MousePress LeftButton (x,y)) (g, _) = (g, (round x, round y))
 resuelveEvento (MousePress MiddleButton (x,y)) (g, o) =
-  if not ((origin, dest) `elem` (edges g)) && zero
+  if not ((origin, dest) `elem` (edges g)) && zero && direction
   then (add_edge (origin, dest) g, o)
   else (g, o)
   where origin = (V 0 o)
         dest = (V 0 (round x, round y))
         zero = check_zero (L.find (==origin) $ vertices g) &&
                check_zero (L.find (==dest) $ vertices g)
+        direction = check_direction o (x,y)
 resuelveEvento (KeyPress restart_key) _ = main_game
 resuelveEvento _ g = g
 
@@ -87,6 +88,11 @@ resuelveEvento _ g = g
 check_zero :: Maybe (Vertex Tag Int) -> Bool
 check_zero (Just (V t c)) = t /= 0
 check_zero _ = False
+
+-- Check whether an edge is vertical/horizontal
+check_direction :: Coordinates -> (Double, Double) -> Bool
+check_direction (x,y) (z,w) =
+  if x == round z || y == round w then True else False
 
 -- A few example games
 game1 :: Graph Tag Int
